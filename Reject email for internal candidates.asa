@@ -1,0 +1,60 @@
+Sub Send_Files()
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Dim sh As Worksheet
+    Dim cell As Range
+   
+    With Application
+        .EnableEvents = False
+        .ScreenUpdating = False
+    End With
+
+    Set sh = Sheets("Sheet1")
+
+    Set OutApp = CreateObject("Outlook.Application")
+ 
+
+    For Each cell In sh.Columns("B").Cells.SpecialCells(xlCellTypeConstants)
+
+        If cell.Value Like "?*@?*.?*" Then
+            Set OutMail = OutApp.CreateItem(0)
+
+            With OutMail
+                .SentOnBehalfOfName = """DOS-HRSD-YPP Examinations"" <ypp-exams@un.org>"
+                .to = cell.value
+               'Default read-value is column B'
+                .cc = cell.offset(0, 1).value 
+               '.bcc = "ypp2018@un.org"
+                .Subject = "2019 YPP " & (cell.offset(0,4).value) & " Exam Application for " & (cell.offset(0,5).value)
+               
+               '.HTMLBody = .HTMLBody & "xyz" for body text.'
+                .HTMLBody = .HTMLBody & "Dear " & (cell.offset(0,-1).value) & ",<br>"
+                .HTMLBody = .HTMLBody & "Applicant ID: <b>" & cell.offset(0, 2).value & "</b><br><br>"
+                
+                .HTMLBody = .HTMLBody & "Please see the attachment regarding your " & (cell.offset(0,4).value) & " application to the 2019 YPP Examination for " & (cell.offset(0,5).value) & ". <br><br>"
+             
+                .HTMLBody = .HTMLBody & "Warm regards,<br><br>"
+                .HTMLBody = .HTMLBody & "YPP Examinations Team<br>"
+                .HTMLBody = .HTMLBody & "Special Assessments Section <br>"
+                .HTMLBody = .HTMLBody & "DOS/HRSD/SAS<br>"
+                .HTMLBody = .HTMLBody & "ypp-exams@un.org <br>"
+                .HTMLBody = .HTMLBody & "https://careers.un.org/ypp"
+
+             
+                .Attachments.Add cell.offset(0, 3).value
+       
+                
+                .Send  'Or use .Display
+            End With
+
+            Set OutMail = Nothing
+        End If
+    Next cell
+
+    Set OutApp = Nothing
+    With Application
+        .EnableEvents = True
+        .ScreenUpdating = True
+    End With
+End Sub
+

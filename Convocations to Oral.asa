@@ -1,0 +1,71 @@
+Sub Send_Files()
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Dim sh As Worksheet
+    Dim cell As Range
+   
+    With Application
+        .EnableEvents = False
+        .ScreenUpdating = False
+    End With
+
+    Set sh = Sheets("Sheet1")
+
+    Set OutApp = CreateObject("Outlook.Application")
+ 
+
+    For Each cell In sh.Columns("B").Cells.SpecialCells(xlCellTypeConstants)
+
+        If cell.Value Like "?*@?*.?*" Then
+            Set OutMail = OutApp.CreateItem(0)
+
+            With OutMail
+                .SentOnBehalfOfName = """DOS-HRSD-YPP2018"" <ypp2018@un.org>"
+                .to = cell.Value
+                .cc = cell.Offset(0, 1).value
+                .Subject = "2018 YPP Legal Affairs Oral Exam Invitation"
+                
+                .HTMLBody = .HTMLBody & "<h5><center><b>PERSONAL AND CONFIDENTIAL</b></center></h5>"
+                .HTMLBody = .HTMLBody & "<b>Application number: " & cell.Offset(0, 2).Value & "</b><br><br>"
+                
+                'for personalized greetings'               
+                .HTMLBody = .HTMLBody & "Dear " & cell.Offset(0, -1).Value & ",<br><br>"
+                
+                .HTMLBody = .HTMLBody & "Based on the results of the proctored verification test part of the 2018 Young Professionals Programme (YPP) <b>LEGAL AFFAIRS</b> Examination, <b>we are pleased to inform you that you are convoked to the oral examination</b>.<br><br>"
+                .HTMLBody = .HTMLBody & "The oral examination will be a <b>competency-based interview</b>, also called behavioural interview. Useful information about such kind of interviews, including a quick e-learning tool can be found on the UN Careers Portal (https://careers.un.org/interview). You can also find examples in many other online fora.<br><br>"
+                .HTMLBody = .HTMLBody & "All interviews will take place via <b>on-line video conference</b> (e.g., Skype). We will schedule a test with you, likely a few days before the actual interview, to make sure that the video and audio connection works. We ask you to <u>prepare your hardware and location for exactly the same conditions as you plan for the interview</u>, i.e. the same computer, same network, same room, etc.<br><br>"
+                .HTMLBody = .HTMLBody & "As we previously communicated, we plan to hold <b>interviews during the period of 22 April – 8 May, 2019</b> (subject to the availability of the interview panel members) and each interview will last approximately an hour. As specified in the YPP Job Opening, knowledge of other UN languages may also be tested at this stage if you indicated in your application that you are fluent in any of those languages.<br><br>"
+                .HTMLBody = .HTMLBody & "We will make a maximum effort to adapt to your availability. In order for us to schedule your interview, please acknowledge receipt of this email and confirm your interest for the oral examination <b>no later than COB Wednesday, 17 April 2019</b>. Please include the following information in your reply:"
+                .HTMLBody = .HTMLBody & "<ol><li><b>Availability during the interview period</b>.<br>"
+                .HTMLBody = .HTMLBody & "<li><b>City and country where you will be located during the interview period</b>.<br>"
+                .HTMLBody = .HTMLBody & "<li><b>Preferred language for the interview (English or French)</b>.<br>"
+                .HTMLBody = .HTMLBody & "<li><b>Your Skype username (Skype ID)</b>.<br>"
+                .HTMLBody = .HTMLBody & "<li><b>Phone number (as a back-up)</b>.</ol>"
+                .HTMLBody = .HTMLBody & "It is important that you respond within the indicated time, so that we can plan accordingly. Thank you for your cooperation. We take this opportunity to express our best wishes for your success in the remaining portion of the examination.<br><br>"
+
+                .HTMLBody = .HTMLBody & "Sincerely,<br><br>"
+                .HTMLBody = .HTMLBody & "The YPP Team<br>"
+                .HTMLBody = .HTMLBody & "Special Assessments Section<br>"
+                .HTMLBody = .HTMLBody & "Human Resources Services Division<br>"
+                .HTMLBody = .HTMLBody & "Department of Operational Support<br>"
+                .HTMLBody = .HTMLBody & "Email: ypp2018@un.org<br>"
+                .HTMLBody = .HTMLBody & "Web: careers.un.org/ypp"
+
+       
+                '.Attachments.Add cell.Offset(0, 1).Value
+                '.Attachments.Add cell.Offset(0, 2).Value
+                
+                .Send  'Or use .Display
+            End With
+
+            Set OutMail = Nothing
+        End If
+    Next cell
+
+    Set OutApp = Nothing
+    With Application
+        .EnableEvents = True
+        .ScreenUpdating = True
+    End With
+End Sub
+

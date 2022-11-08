@@ -1,0 +1,69 @@
+Sub Send_Files()
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Dim sh As Worksheet
+    Dim cell As Range
+   
+    With Application
+        .EnableEvents = False
+        .ScreenUpdating = False
+    End With
+
+    Set sh = Sheets("Sheet1")
+
+    Set OutApp = CreateObject("Outlook.Application")
+ 
+
+    For Each cell In sh.Columns("B").Cells.SpecialCells(xlCellTypeConstants)
+
+        If cell.Value Like "?*@?*.?*" Then
+            Set OutMail = OutApp.CreateItem(0)
+
+           With OutMail
+                .SentOnBehalfOfName = """DOS-HRSD-YPP Examinations"" <ypp-exams@un.org>"
+                .to = cell.Value
+                .cc = cell.Offset(0, 1).Value
+                '.bcc = "ypp2018@un.org"
+                .Subject = "2019 YPP Exam for Information Systems and Technology - your response needed || Examen YPP 2019 pour les Systèmes et technologies de l'information - nous besoin votre réponse"
+               
+                .HTMLBody = .HTMLBody & "Dear " & cell.Offset(0, -1).Value & ",<br><br>"
+                                
+                .HTMLBody = .HTMLBody & "<b><u>Important: final reminder regarding the United Nations Young Professionals Programme (YPP) exam</u></b>.<br><br>"
+                .HTMLBody = .HTMLBody & "We are now working on scheduling the YPP exam, and in recognition of the time that has elapsed since your application, we would like to ask you a few questions (via the below survey link) to determine the location which you will likely be at during the time of the examination. We are tentatively targeting <b>August/September 2020</b>.<br><br>"
+                .HTMLBody = .HTMLBody & "If you are no longer interested in continuing with this process, we would kindly ask you to formally withdraw your application in <a href='inspira.un.org'>inspira.un.org</a>, and to indicate as such in this survey.<br><br>"
+                .HTMLBody = .HTMLBody & "If you do plan on taking the exam, we also encourage you to log-in to the testing platform (<a href='https://assessments.un.org/'>assessments.un.org</a>) to ensure that you are able to access the site and to refamiliarize yourself with the content in the Information Course. <br><br>"
+                .HTMLBody = .HTMLBody & "<b>Please <a href='" & cell.Offset(0, 3).Value & "'>respond to this survey</a></b> (or copy and paste this link to your browser: " & cell.Offset(0, 3).Value & ") <b>by no later than <u>Tuesday, 21 July</u></b>. <br><br>"
+                .HTMLBody = .HTMLBody & "If we do not hear from you by the above deadline, you will NOT be able to participate in the exam process.<br><br>"
+                
+                .HTMLBody = .HTMLBody & "Warm regards,<br>"
+                .HTMLBody = .HTMLBody & "The YPP Examinations Team<br><br>"
+                .HTMLBody = .HTMLBody & "--------------------------------------------------------------------------------------------------------------------------------<br><br>"
+                .HTMLBody = .HTMLBody & "Cher/Chère " & cell.Offset(0, -1).Value & ",<br><br>"
+                                
+                .HTMLBody = .HTMLBody & "<b><u>Important: dernier rappel concernant le concours du Programme jeunes administrateurs (YPP) des Nations Unies</u></b>.<br><br>"
+                .HTMLBody = .HTMLBody & "Nous travaillons actuellement sur la planification de l'examen YPP et, compte tenu du temps qui s'est écoulé depuis votre postulation a l'avis de vacance, nous aimerions vous poser quelques questions (via le lien ci-dessous) pour déterminer où vous serez probablement pendant le temps de l’examen. Nous visons provisoirement <b>août / septembre 2020</b>.<br><br>"
+                .HTMLBody = .HTMLBody & "Si vous n'êtes plus intéressé à poursuivre ce processus, nous vous prions de bien vouloir retirer officiellement votre candidature sur <a href='inspira.un.org'>inspira.un.org</a>, et de l'indiquer comme tel dans cette enquête.<br><br>"
+                .HTMLBody = .HTMLBody & "Si vous prévoyez de passer l'examen, nous vous encourageons également à vous connecter à la plate-forme de test (<a href='https://assessments.un.org/'>assessments.un.org</a>) pour vous assurer que vous êtes en mesure d'accéder au site et de vous familiariser avec le contenu du cours d'information. <br><br>"
+                .HTMLBody = .HTMLBody & "<b>Veuillez <a href='" & cell.Offset(0, 3).Value & "'>répondre à cette enquête</a></b> (ou copiez et collez ce lien dans votre navigateur : " & cell.Offset(0, 3).Value & ") <b>au plus tard <u>le mardi 21 juillet</u></b>. <br><br>"
+                .HTMLBody = .HTMLBody & "Si nous ne recevons pas votre réponse dans le délai ci-dessus, vous NE pourrez PAS participer au processus d'examen.<br><br>"
+                
+                .HTMLBody = .HTMLBody & "Cordialement,<br>"
+                .HTMLBody = .HTMLBody & "L’équipe des examens YPP<br><br>"
+
+                '.Attachments.Add cell.Offset(0, 2).Value
+                
+                .Send  'Or use .Display
+            End With
+
+            Set OutMail = Nothing
+        End If
+    Next cell
+
+    Set OutApp = Nothing
+    With Application
+        .EnableEvents = True
+        .ScreenUpdating = True
+    End With
+End Sub
+
+

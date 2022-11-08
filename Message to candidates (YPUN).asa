@@ -1,0 +1,73 @@
+Sub Send_Files()
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Dim sh As Worksheet
+    Dim cell As Range
+   
+    With Application
+        .EnableEvents = False
+        .ScreenUpdating = False
+    End With
+
+    Set sh = Sheets("Sheet1")
+
+    Set OutApp = CreateObject("Outlook.Application")
+ 
+
+    For Each cell In sh.Columns("B").Cells.SpecialCells(xlCellTypeConstants)
+
+        If cell.Value Like "?*@?*.?*" Then
+            Set OutMail = OutApp.CreateItem(0)
+
+            With OutMail
+                .SentOnBehalfOfName = """UN YPP Examinations Team"" <ypp-exams@un.org>"
+                'Default read-value is column B'
+                .to = cell.Value
+                '.cc = cell.Offset(0, 1).Value
+                '.bcc = "ypp-exams@un.org"
+                .Subject = "2020 YPP Exam in " & (cell.Offset(0, 3).Value) & " (Applicant ID: " & (cell.Offset(0, 2).Value) & ")"
+               
+               '.HTMLBody = .HTMLBody & "xyz" for body text.'
+                .HTMLBody = .HTMLBody & "Dear " & (cell.Offset(0, -1).Value) & ",<br><br>"
+                                
+                .HTMLBody = .HTMLBody & "Congratulations once again on being invited to the first stage of the <b>Young Professionals Programme (YPP) examination</b>. You will soon receive (or have recently received) a separate email with log-in credentials for <b>our new</b> UN Online Examinations and Tests System <b>site</b> (<a href='https://exams.assessments.un.org'>exams.assessments.un.org</a>). After logging in to the testing platform, you will see in your dashboard a link for an “<b>Information and Practice Hub</b>.” This hub will continue to be updated with content aimed to help you prepare for the exam. Please explore the site and visit often to keep up to date! <br><br>"
+
+             
+                .HTMLBody = .HTMLBody & "Warm regards,<br><br>"
+                .HTMLBody = .HTMLBody & "YPP Examinations Team <br>"
+                .HTMLBody = .HTMLBody & "Special Assessments Section <br>"
+                .HTMLBody = .HTMLBody & "DOS/HRSD/SAS <br>"
+                .HTMLBody = .HTMLBody & "ypp-exams@un.org <br>"
+                .HTMLBody = .HTMLBody & "https://careers.un.org/ypp<br><br>"
+
+                .HTMLBody = .HTMLBody & "‎*****************‎<br><br>"
+
+				.HTMLBody = .HTMLBody & "Chère/Cher‎ " & (cell.Offset(0, -1).Value) & ",<br><br>"
+                                
+                .HTMLBody = .HTMLBody & "Nous vous félicitons encore pour votre invitation à la première étape du <b>concours du Programme des jeunes administrateurs (YPP)</b>. Vous recevrez prochainement (ou avez reçu récemment) un courriel individuel avec les informations d'accès <b>à notre nouveau site</b> du système d'examens et de tests en ligne de l'ONU (<a href='https://exams.assessments.un.org'>exams.assessments.un.org</a>). Une fois connecté à la plate-forme de tests, vous trouverez dans votre tableau de bord un lien pour accéder au « <b>Centre d'information et de practique</b> ». Ce centre sera continuellement actualisé avec du contenu destiné à vous aider à la préparation de l'examen. Veuillez explorer le site et le visiter souvent pour vous maintenir à jour ! "
+             
+                .HTMLBody = .HTMLBody & "Cordialement,‎<br><br>"
+                .HTMLBody = .HTMLBody & "L’équipe d'examens YPP <br>"
+                .HTMLBody = .HTMLBody & "Special Assessments Section <br>"
+                .HTMLBody = .HTMLBody & "DOS/HRSD/SAS <br>"
+                .HTMLBody = .HTMLBody & "ypp-exams@un.org <br>"
+                .HTMLBody = .HTMLBody & "https://careers.un.org/yppfr"
+             
+                '.Attachments.Add cell.Offset(0, 3).Value
+       
+                
+                .Send  'Or use .Display
+            End With
+
+            Set OutMail = Nothing
+        End If
+    Next cell
+
+    Set OutApp = Nothing
+    With Application
+        .EnableEvents = True
+        .ScreenUpdating = True
+    End With
+End Sub
+
+

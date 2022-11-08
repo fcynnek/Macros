@@ -1,0 +1,78 @@
+Sub Send_Files()
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Dim sh As Worksheet
+    Dim cell As Range
+   
+    With Application
+        .EnableEvents = False
+        .ScreenUpdating = False
+    End With
+
+    Set sh = Sheets("Sheet1")
+
+    Set OutApp = CreateObject("Outlook.Application")
+ 
+
+    For Each cell In sh.Columns("B").Cells.SpecialCells(xlCellTypeConstants)
+
+        If cell.Value Like "?*@?*.?*" Then
+            Set OutMail = OutApp.CreateItem(0)
+
+            With OutMail
+                .SentOnBehalfOfName = """DOS-HRSD-YPP Examinations"" <ypp-exams@un.org>"
+                .to = cell.Value
+                .cc = cell.offset(0,1).value
+                .Subject = "YPP Economic Affairs‎ Exam update - Exam timing | Mise à jour de l'examen des affaires économiques du YPP ‎- Heures d'examen"
+				
+				'for personalized greetings'               
+                .HTMLBody = .HTMLBody & "Dear " & cell.Offset(0, -1).Value & ",<br><br>"
+                
+                .HTMLBody = .HTMLBody & "Thank you for your patience and your continued interest in the UN Young Professionals Programme ‎‎(YPP) examination. We would like to inform you that we have now determined the date and time for the ‎exam to which you are convoked. Please find below the details for your exam time window.‎ <br><br>"
+                .HTMLBody = .HTMLBody & "<b>Examination day and time</b>: your assigned exam day and time window are listed here in <u>New York time</u>. <br><br>"
+				.HTMLBody = .HTMLBody & "Date: <b>Wednesday, 9 September 2020‎</b><br>"
+				.HTMLBody = .HTMLBody & "Time: <b>" & cell.Offset(0, 2).Value & " New York time</b><br>"
+				.HTMLBody = .HTMLBody & "<ul><li>You may wish to use a time difference converter (e.g., ‎<a href='https://timeanddate.com/'>timeanddate.com</a>), to be sure of what this translates to in your local time.‎</li>"
+				.HTMLBody = .HTMLBody & "<li>Please note that you are given a 4-hour exam window within which to complete the ~2 ‎hour exam (please refer to the exam instructions for more details on timing of each ‎exam part).</li></ul><br>"
+				.HTMLBody = .HTMLBody & "We encourage you to revisit the info course in <a href='https://assessments.un.org/'>assessments.un.org</a> to review the exam instructions. ‎You should <b>log in to the testing platform soonest<b>, so that you can contact us well in advance of the ‎exam day if you have any difficulties accessing your account.‎<br><br>"
+				.HTMLBody = .HTMLBody & "In the days leading up to the exam, you will see the actual exam in your dashboard when you log in to ‎the testing platform. On the day of the exam, you will need to log in to the testing platform, click on the ‎actual exam, and will have access to begin the exam parts during the time window specified above. <br><br>"
+				.HTMLBody = .HTMLBody & "As a reminder, there is a technical support link in the YPP course; this will help you troubleshoot any ‎issues. You should use the technical support link prior to contacting us on the day of the exam. This will ‎also ensure that your technical problems are well detailed for our support agents and will minimize any ‎potential loss of time.<br><br>"
+                .HTMLBody = .HTMLBody & "We wish you good luck on your exam!‎<br><br>"
+                .HTMLBody = .HTMLBody & "Warm regards‎,<br><br>"
+                .HTMLBody = .HTMLBody & "YPP Examinations Team<br>"
+                .HTMLBody = .HTMLBody & "ypp-exams@un.org<br>"
+                .HTMLBody = .HTMLBody & "https://careers.un.org/ypp <br><br>"
+				
+				.HTMLBody = .HTMLBody & "--------------------| |--------------------<br><br>"
+                .HTMLBody = .HTMLBody & "Cher/Chère " & cell.Offset(0, -1).Value & ",<br><br>"
+                
+                .HTMLBody = .HTMLBody & "Merci de votre patience et de votre intérêt continu pour l'examen du Programme Jeunes administrateurs des Nations Unies (YPP). Nous souhaitons vous informer que nous avons maintenant ‎déterminé la date et l'heure de l'examen auquel vous êtes convoqué. Veuillez trouver ci-dessous les ‎détails de la fenêtre horaire de votre examen.‎<br><br>"
+                .HTMLBody = .HTMLBody & "<b>Jour et heure de l'examen ‎</b>: le jour et l'heure de l'examen qui vous ont été attribués sont indiqués ici à <u>l'heure de New York</u>. <br><br>"
+                .HTMLBody = .HTMLBody & "Date : <b>mercredi 9 septembre 2020‎</b><br>"
+                .HTMLBody = .HTMLBody & "Heure ‎: <b>" & cell.Offset(0, 3).Value & " heure de New York</b><br>"
+                .HTMLBody = .HTMLBody & "<ul><li>Vous souhaiterez peut-être utiliser un convertisseur de décalage horaire (par exemple, ‎<a href='https://timeanddate.com/'>timeanddate.com</a>), pour être sûr de votre fenêtre d'examen dans votre heure locale‎.‎</li>"
+                .HTMLBody = .HTMLBody & "<li>Veuillez noter que vous disposez d'une fenêtre d'examen de 4 heures pour terminer ‎l'examen d'environ 2 heures (veuillez vous référer aux instructions de l'examen pour ‎plus de détails sur le moment de chaque partie de l'examen).‎</li></ul><br>"
+                .HTMLBody = .HTMLBody & "Nous vous encourageons à revoir le cours d'information sur <a href='https://assessments.un.org/'>assessments.un.org</a> pour consulter les instructions d'examen. Vous devez ‎<b>vous connecter à la plateforme de test le plus tôt possible<b>, afin de pouvoir nous contacter bien avant le jour de l'examen si vous rencontrez des difficultés pour ‎accéder à votre compte.‎<br><br>"
+                .HTMLBody = .HTMLBody & "Dans les jours précédant l'examen, vous verrez l'examen réel dans votre tableau de bord lorsque vous ‎vous connectez à la plate-forme de test. Le jour de l'examen, vous devrez vous connecter à la plate-‎forme de test, cliquer sur l'examen réel et avoir accès pour commencer les parties de l'examen pendant ‎la fenêtre de temps spécifiée ci-dessus.‎<br><br>"
+                .HTMLBody = .HTMLBody & "Veuillez noter qu'il existe un lien de support technique dans le cours YPP ; cela vous aidera à résoudre ‎les problèmes. Vous devez utiliser le lien du support technique avant de nous contacter le jour de ‎l'examen. Cela garantira également que vos problèmes techniques sont bien détaillés pour nos agents ‎de support et minimisera toute perte de temps potentielle.‎<br><br>"
+                .HTMLBody = .HTMLBody & "Nous vous souhaitons bonne chance pour votre examen ‎!‎<br><br>"
+                .HTMLBody = .HTMLBody & "Cordialement,<br><br>"
+                .HTMLBody = .HTMLBody & "L’équipe des examens YPP<br>"
+                .HTMLBody = .HTMLBody & "ypp-exams@un.org<br>"
+                .HTMLBody = .HTMLBody & "https://careers.un.org/yppfr <br><br>"
+       
+                '.Attachments.Add cell.Offset(0, 1).Value
+                
+                .Send  'Or use .Display
+            End With
+
+            Set OutMail = Nothing
+        End If
+    Next cell
+
+    Set OutApp = Nothing
+    With Application
+        .EnableEvents = True
+        .ScreenUpdating = True
+    End With
+End Sub

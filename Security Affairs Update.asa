@@ -1,0 +1,78 @@
+Sub Send_Files()
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Dim sh As Worksheet
+    Dim cell As Range
+   
+    With Application
+        .EnableEvents = False
+        .ScreenUpdating = False
+    End With
+
+    Set sh = Sheets("Sheet1")
+
+    Set OutApp = CreateObject("Outlook.Application")
+ 
+
+    For Each cell In sh.Columns("B").Cells.SpecialCells(xlCellTypeConstants)
+
+        If cell.Value Like "?*@?*.?*" Then
+            Set OutMail = OutApp.CreateItem(0)
+
+            With OutMail
+                .SentOnBehalfOfName = """DOS-HRSD-YPP2018"" <ypp2018@un.org>"
+                .to = cell.Value
+                .cc = cell.offset(0,22).value
+                .Subject = "YPP Security Affairs Exam Update - Exam timing | Mise à jour de l'examen des affaires de sécurité du YPP"
+				
+				'for personalized greetings'               
+                .HTMLBody = .HTMLBody & "Dear " & cell.Offset(0, -1).Value & ",<br><br>"
+                
+                .HTMLBody = .HTMLBody & "<ol><li><b>Examination day and time</b>: your assigned exam day and time window are listed here in <u>New York time</u>.</li>"
+				.HTMLBody = .HTMLBody & "Date: <b>Wednesday, 10 June 2020</b><br>"
+				.HTMLBody = .HTMLBody & "Time: <b>" & cell.Offset(0, 1).Value & " New York time</b><br>"
+				.HTMLBody = .HTMLBody & "<ul><li>You may wish to use a time difference converter (e.g., <a href='https://timeanddate.com/'>timeanddate.com</a>), to be sure of what this translates to in your local time.</li>"
+				.HTMLBody = .HTMLBody & "<li>Please note that you are given a 6-hour exam window within which to complete a maximum of 4-hours of exam. We encourage you to revisit the YPP Exam Instructions section of the course in <a href='https://assessments.un.org/'>assessments.un.org</a>.</li></ul><br>"
+				.HTMLBody = .HTMLBody & "<li><b>Exam parts</b>: on the day of the exam, you will see in the testing system which exam parts, <i>if any</i>, you have already completed and which are still to be completed. This is also shown below.</li></ol>"
+				.HTMLBody = .HTMLBody & "<table style='width: 100%;'><tbody><tr><td style='width: 20.0000%;'><b><u>UN Core Values Part 1.1.1</b></u></td><td style='width: 20.0000%;'><b><u>UN Core Values Part 1.1.2</b></u></td><td style='width: 20.0000%;'><b><u>Summary &amp; Conclusion Part 1.2.1</b></u></td><td style='width: 20.0000%;'><b><u>Summary &amp; Conclusion Part 1.2.2</b></u></td><td style='width: 20.0000%;'><b><u>Security Technical Knowledge Part 2.1.1</b></u></td></tr><tr><td style='width: 20.0000%;'>" & cell.Offset(0, 2).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 3).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 4).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 5).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 6).Value & "</td></tr></tbody></table>"
+				.HTMLBody = .HTMLBody & "<table style='width: 100%;'><tbody><tr><td style='width: 20.0000%;'><b><u>Security Technical Knowledge Part 2.1.2</b></u></td><td style='width: 20.0000%;'><b><u>Situational Judgment Part</b></u></td><td style='width: 20.0000%;'><b><u>Security Reasoning Part 2.3.1</b></u></td><td style='width: 20.0000%;'><b><u>Security Reasoning Part 2.3.2</b></u></td><td style='width: 20.0000%;'><b><u>Security Report Drafting Part</b></u></td></tr><tr><td style='width: 20.0000%;'>" & cell.Offset(0, 7).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 8).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 9).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 10).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 11).Value & "</td></tr></tbody></table><br><br>"
+
+                .HTMLBody = .HTMLBody & "Best regards,<br><br>"
+                .HTMLBody = .HTMLBody & "YPP Examinations Team<br>"
+                .HTMLBody = .HTMLBody & "ypp2018@un.org<br>"
+                .HTMLBody = .HTMLBody & "https://careers.un.org/ypp <br><br>"
+				
+				.HTMLBody = .HTMLBody & "--------------------| |--------------------<br><br>"
+                .HTMLBody = .HTMLBody & "Cher/Chère " & cell.Offset(0, -1).Value & ",<br><br>"
+                
+                .HTMLBody = .HTMLBody & "<ol><li><b>Jour et heure de l'examen </b>: le jour et l'heure de votre examen qui vous sont attribué ci-dessous sont à <u>l'heure de New York</u>.</li>"
+				.HTMLBody = .HTMLBody & "Date : <b>mercredi, 10 juin 2020</b><br>"
+				.HTMLBody = .HTMLBody & "Heure : <b>" & cell.Offset(0, 1).Value & " heure de New York</b><br>"
+				.HTMLBody = .HTMLBody & "<ul><li>Vous souhaiterez peut-être utiliser un convertisseur de décalage horaire (par exemple, <a href='https://timeanddate.com/'>timeanddate.com</a>), pour être sûr de ce que cela signifie dans votre heure locale.</li>"
+				.HTMLBody = .HTMLBody & "<li>Veuillez noter que vous disposez d'une fenêtre d'examen de 6 heures pour effectuer un maximum de 4 heures d'examen. Nous vous encourageons à revoir la section Instructions de l'examen YPP du cours sur  <a href='https://assessments.un.org/'>assessments.un.org</a>.</li></ul><br>"
+				.HTMLBody = .HTMLBody & "<li><b>Sections d'examen </b>: au cours de la journée d'examen, vous verrez dans le système de test quelles parties de l'examen, <i>si tel est le cas</i>, vous avez déjà soumises et qui doivent encore être complétées. Cela est également illustré ci-dessous.</li></ol>"
+				.HTMLBody = .HTMLBody & "<table style='width: 100%;'><tbody><tr><td style='width: 20.0000%;'><b><u>Section 1.1.1 - Valeurs fondamentales de l'ONU</b></u></td><td style='width: 20.0000%;'><b><u>Section 1.1.2 - Valeurs fondamentales de l'ONU</b></u></td><td style='width: 20.0000%;'><b><u>Section 1.2.1 - Exercice de Synthèse & Conclusion</b></u></td>            <td style='width: 20.0000%;'><b><u>Section 1.2.2 - Exercice de Synthèse & Conclusion</b></u></td><td style='width: 20.0000%;'><b><u>Section 2.1.1 - Connaissances techniques en matière de sécurité</b></u></td></tr><tr><td style='width: 20.0000%;'>" & cell.Offset(0, 12).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 13).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 14).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 15).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 16).Value & "</td></tr></tbody></table>"
+				.HTMLBody = .HTMLBody & "<table style='width: 100%;'><tbody><tr><td style='width: 20.0000%;'><b><u>Section 2.1.2 - Connaissances techniques en matière de sécurité</b></u></td><td style='width: 20.0000%;'><b><u>Section de l’examen sur le Jugement Situationnel</b></u> </td><td style='width: 20.0000%;'><b><u>Section 2.3.1 – Exercice de Raisonnement sur des Problématiques de Sécurité</b></u></td><td style='width: 20.0000%;'><b><u>Section 2.3.2 – Exercice de Raisonnement sur des Problématiques de Sécurité</b></u></td><td style='width: 20.0000%;'><b><u>Section de l’examen sur la Rédaction d’un Rapport de Sécurité</b></u></td></tr><tr><td style='width: 20.0000%;'>" & cell.Offset(0, 17).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 18).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 19).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 20).Value & "</td><td style='width: 20.0000%;'>" & cell.Offset(0, 21).Value & "</td></tr></tbody></table><br><br>"
+
+                .HTMLBody = .HTMLBody & "Cordialement,<br><br>"
+                .HTMLBody = .HTMLBody & "L’équipe des examens YPP<br>"
+                .HTMLBody = .HTMLBody & "ypp2018@un.org<br>"
+                .HTMLBody = .HTMLBody & "https://careers.un.org/yppfr <br><br>"
+       
+                '.Attachments.Add cell.Offset(0, 1).Value
+                '.Attachments.Add cell.Offset(0, 2).Value
+                
+                .Send  'Or use .Display
+            End With
+
+            Set OutMail = Nothing
+        End If
+    Next cell
+
+    Set OutApp = Nothing
+    With Application
+        .EnableEvents = True
+        .ScreenUpdating = True
+    End With
+End Sub
+

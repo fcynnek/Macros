@@ -1,0 +1,42 @@
+Sub Merge_To_Individual_Files()
+'Merges one record at a time to the folder containing the mailmerge main document.
+' Sourced from: https://forums.windowssecrets.com/showthread.php/163017-Word-Mailmerge-Tips-amp-Tricks
+Application.ScreenUpdating = False
+Dim StrFolder As String, StrName As String, MainDoc As Document, i As Long, j As Long
+Const StrNoChr As String = """*./\:?|"
+Set MainDoc = ActiveDocument
+With MainDoc
+  StrFolder = .Path & Application.PathSeparator
+  For i = 1 To .MailMerge.DataSource.RecordCount
+    With .MailMerge
+      .Destination = wdSendToNewDocument
+      .SuppressBlankLines = True
+      With .DataSource
+        .FirstRecord = i
+        .LastRecord = i
+        .ActiveRecord = i
+        If Trim(.DataFields("Last_Name")) = "" Then Exit For
+        'StrFolder = .DataFields("Folder") & Application.PathSeparator
+        StrName = .DataFields("Last_Name") & "_" & .DataFields("First_Name")
+      End With
+      .Execute Pause:=False
+      If Err.Number = 5631 Then
+        Err.Clear
+        GoTo NextRecord
+      End If
+    End With
+      For j = 1 To Len(StrNoChr)
+        StrName = Replace(StrName, Mid(StrNoChr, j, 1), "_")
+      Next
+    StrName = Trim(StrName)
+    With ActiveDocument
+      .SaveAs FileName:=StrFolder & StrName & ".docx", FileFormat:=wdFormatXMLDocument, AddToRecentFiles:=False
+      ' and/or:
+      .SaveAs FileName:=StrFolder & StrName & ".pdf", FileFormat:=wdFormatPDF, AddToRecentFiles:=False
+      .Close SaveChanges:=False
+    End With
+NextRecord:
+  Next i
+End With
+Application.ScreenUpdating = True
+End Sub

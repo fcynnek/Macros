@@ -1,0 +1,56 @@
+Microsoft Windows [Version 10.0.16299.1625]
+(c) 2017 Microsoft Corporation. All rights reserved.
+
+H:\>tracert ypun.org
+
+Tracing route to ypun.org [92.242.45.213]
+over a maximum of 30 hops:
+
+  1    <1 ms    <1 ms    <1 ms  10.240.65.253
+  2     1 ms     1 ms    <1 ms  10.250.1.101
+  3     1 ms     1 ms     1 ms  157.150.191.212
+  4    <1 ms    <1 ms    <1 ms  157.150.192.248
+  5     1 ms     1 ms     1 ms  10.250.232.2
+  6     5 ms     4 ms     3 ms  57.216.51.169
+  7    46 ms    50 ms    50 ms  57.212.53.149
+  8     9 ms     9 ms     9 ms  57.212.53.150
+  9     9 ms     9 ms     9 ms  10.250.226.225
+ 10    16 ms     9 ms    11 ms  157.150.227.30
+ 11     9 ms    10 ms    10 ms  10.234.0.81
+ 12    11 ms    10 ms    10 ms  10.230.44.86
+ 13    12 ms    10 ms    11 ms  10.230.44.85
+ 14    14 ms    12 ms    12 ms  81.52.188.21
+ 15    91 ms    88 ms    88 ms  pos0-0-5-0.lontr3.-.opentransit.net [193.251.131.185]
+ 16     *       91 ms    91 ms  hundredgige0-0-0-4.lontr6.-.opentransit.net [193.251.133.223]
+ 17   100 ms   100 ms   101 ms  et-4-1-6-0.ffttr6.-.opentransit.net [193.251.243.250]
+ 18   100 ms   101 ms   100 ms  rostelecom-3.gw.opentransit.net [193.251.247.92]
+ 19   153 ms   153 ms   154 ms  213.59.211.63
+ 20     *        *        *     Request timed out.
+ 21   150 ms   152 ms   149 ms  5.143.250.33
+ 22     *        *        *     Request timed out.
+ 23     *        *        *     Request timed out.
+ 24   152 ms   151 ms   151 ms  92.242.45.213
+ 25   152 ms   153 ms   150 ms  92.242.45.213
+
+Trace complete.
+
+H:\>nslookup
+Default Server:  ny-ntp-i-serv-002.ptc.un.org
+Address:  10.250.17.1
+
+> set type=mx
+> cloudlite.ru
+Server:  ny-ntp-i-serv-002.ptc.un.org
+Address:  10.250.17.1
+
+Non-authoritative answer:
+cloudlite.ru    MX preference = 10, mail exchanger = edge2.dtln.ru
+cloudlite.ru    MX preference = 90, mail exchanger = edge3.dtln.ru
+
+cloudlite.ru    nameserver = ns2.dtln.ru
+cloudlite.ru    nameserver = ns0.dtln.ru
+ns2.dtln.ru     internet address = 95.131.31.206
+ns2.dtln.ru     AAAA IPv6 address = 2a01:ba80:d:f::206
+ns0.dtln.ru     internet address = 178.20.234.206
+ns0.dtln.ru     AAAA IPv6 address = 2a01:ba80:d:e::206
+>

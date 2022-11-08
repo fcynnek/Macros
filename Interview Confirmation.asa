@@ -1,0 +1,63 @@
+Sub Send_Files()
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Dim sh As Worksheet
+    Dim cell As Range
+   
+    With Application
+        .EnableEvents = False
+        .ScreenUpdating = False
+    End With
+
+    Set sh = Sheets("Sheet1")
+
+    Set OutApp = CreateObject("Outlook.Application")
+ 
+
+    For Each cell In sh.Columns("B").Cells.SpecialCells(xlCellTypeConstants)
+
+        If cell.Value Like "?*@?*.?*" Then
+            Set OutMail = OutApp.CreateItem(0)
+
+            With OutMail
+                .SentOnBehalfOfName = """DOS-HRSD-YPP2018"" <ypp2018@un.org>"
+                .to = cell.Value
+                .cc = cell.Offset(0, 1).Value
+                .Subject = "2018 YPP Statistics Invitation to Oral Exam Confirmation"
+               
+                .HTMLBody = .HTMLBody & "Dear " & cell.Offset(0, -1).Value & ",<br><br>"
+                
+                .HTMLBody = .HTMLBody & "Thank you for your confirmation to participate in the interview component of the 2018 Young ‎Professional Programme in Statistics.‎<br><br>"
+                .HTMLBody = .HTMLBody & "We are pleased to inform you that your interview will take place ‎<b>" & cell.Offset(0, 2).Value & "</b> and will be conducted in <b>English</b>. Please note that we have made a maximum effort to adapt to your ‎availability while scheduling your interview. ‎<br><br>"
+                .HTMLBody = .HTMLBody & "Given that the interview panel consists of geographically dispersed members, we have very limited ‎flexibility to accommodate rescheduling requests. Therefore, we will greatly appreciate your ‎cooperation. <br><br>"
+                .HTMLBody = .HTMLBody & "The interview should last approximately 1 hour. We will be conducting other interviews before/after your ‎interview. As a result, please allow 30 minutes for contingencies.  We will initiate the connection from ‎our end. ‎<br><br>"
+                .HTMLBody = .HTMLBody & "For the actual interview, we will use Skype. We will use the following Skype account for the interview:‎<br>"
+                .HTMLBody = .HTMLBody & "Skype ID:  <b>youngprofessionalprogramme01</b><br>‎<br>"
+                .HTMLBody = .HTMLBody & "We kindly ask you to confirm your availability for the interview <b>asap</b>.  After confirming your ‎availability, you will be receiving an email which will contain your video test call schedule if you have not yet received one already or if you have not had your test call yet.<br>‎<br>"
+                .HTMLBody = .HTMLBody & "If you have any questions, please let us know.‎<br><br>"
+
+                .HTMLBody = .HTMLBody & "Warm regards,<br><br>"
+                .HTMLBody = .HTMLBody & "YPP Examinations Team<br>"
+                .HTMLBody = .HTMLBody & "Special Assessments Section<br>"
+                .HTMLBody = .HTMLBody & "DOS/HRSD/SAS<br>"
+                .HTMLBody = .HTMLBody & "ypp2018@un.org<br>"
+                .HTMLBody = .HTMLBody & "https://careers.un.org/ypp"
+
+       
+                '.Attachments.Add cell.Offset(0, 2).Value
+                
+                .Send  'Or use .Display
+            End With
+
+            Set OutMail = Nothing
+        End If
+    Next cell
+
+    Set OutApp = Nothing
+    With Application
+        .EnableEvents = True
+        .ScreenUpdating = True
+    End With
+End Sub
+
+

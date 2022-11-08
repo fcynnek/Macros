@@ -1,0 +1,57 @@
+Sub Send_Files()
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Dim sh As Worksheet
+    Dim cell As Range
+   
+    With Application
+        .EnableEvents = False
+        .ScreenUpdating = False
+    End With
+
+    Set sh = Sheets("Sheet1")
+
+    Set OutApp = CreateObject("Outlook.Application")
+ 
+
+    For Each cell In sh.Columns("B").Cells.SpecialCells(xlCellTypeConstants)
+
+        If cell.Value Like "?*@?*.?*" Then
+            Set OutMail = OutApp.CreateItem(0)
+
+            With OutMail
+                .SentOnBehalfOfName = """DOS-HRSD-YPP Examinations"" <ypp-exams@un.org>"
+                .to = cell.Value
+                .cc = cell.offset(0,1).value & ";ypp-placements@un.org"
+                .bcc = "ypp-exams@un.org"
+                .Subject = "[this is a test]: 2019 YPP Examination Results for Economic Affairs"
+               
+                .HTMLBody = .HTMLBody & "Dear <b>" & cell.Offset(0, -1).Value & "</b>,<br>"
+                .HTMLBody = .HTMLBody & "Applicant number: <b>" & cell.Offset(0, 2).Value & "</b><br><br>"                
+                
+                .HTMLBody = .HTMLBody & "Congratulations on reaching the final stage of the examination. Please find attached your result letter. <br><br>"
+
+                .HTMLBody = .HTMLBody & "Kind regards,<br><br>"
+                .HTMLBody = .HTMLBody & "YPP Examinations Team<br>"
+                .HTMLBody = .HTMLBody & "Special Assessments Section<br>"
+                .HTMLBody = .HTMLBody & "DOS/HRSD/SAS<br>"
+                .HTMLBody = .HTMLBody & "ypp-exams@un.org<br>"
+                .HTMLBody = .HTMLBody & "https://careers.un.org/ypp"
+
+       
+                .Attachments.Add cell.Offset(0, 4).Value
+                
+                .Send  'Or use .Display
+            End With
+
+            Set OutMail = Nothing
+        End If
+    Next cell
+
+    Set OutApp = Nothing
+    With Application
+        .EnableEvents = True
+        .ScreenUpdating = True
+    End With
+End Sub
+

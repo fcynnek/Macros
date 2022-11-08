@@ -1,0 +1,66 @@
+Sub Send_Files()
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Dim sh As Worksheet
+    Dim cell As Range
+   
+    With Application
+        .EnableEvents = False
+        .ScreenUpdating = False
+    End With
+
+    Set sh = Sheets("Sheet1")
+
+    Set OutApp = CreateObject("Outlook.Application")
+ 
+
+    For Each cell In sh.Columns("B").Cells.SpecialCells(xlCellTypeConstants)
+
+        If cell.Value Like "?*@?*.?*" Then
+            Set OutMail = OutApp.CreateItem(0)
+
+            With OutMail
+                .SentOnBehalfOfName = """DOS-HRSD-YPP Examinations"" <ypp-exams@un.org>"
+                .to = cell.Value
+                .cc = cell.Offset(0, 1).value
+                .Subject = "2019 YPP " & cell.offset(0,3).value & " Application for Economic Affairs"
+                
+                .HTMLBody = .HTMLBody & "<h5><center><b>PERSONAL AND CONFIDENTIAL</b></center></h5><br><br>"
+                .HTMLBody = .HTMLBody & "<b>Application number: " & cell.Offset(0, 2).Value & "</b><br>"
+            
+                'for personalized greetings'               
+                .HTMLBody = .HTMLBody & "Dear " & cell.Offset(0, -1).Value & ",<br><br>"
+                                
+				.HTMLBody = .HTMLBody & "CONGRATULATIONS! This is to inform you that the United Nations Secretariat has finished the screening of your application for the 2019 Young Professionals Programme (YPP). We are happy to let you know that you are invited (i.e., convoked) to sit the first part of the 2019 YPP written examination in <b>Economic Affairs</b>.<br><br>"
+				.HTMLBody = .HTMLBody & "The first stage of the 2019 YPP exam is tentatively scheduled to be administered online in December 2019. Only those who meet the cut-off set from this stage will be invited to the second stage (to take place online, tentatively in January 2020). As we work to finalize the exam dates, you will receive additional correspondence soliciting your anticipated location (city and country).<br><br>"
+				.HTMLBody = .HTMLBody & "As we approach the exam date, you will be provided with further information regarding the online administration of the exam. This will include the timing of the exam and the window within which you can complete it, as well as a link to familiarize yourself with the exam structure and the online testing platform.<br><br>"
+				.HTMLBody = .HTMLBody & "Please do continue to visit the YPP website (careers.un.org/ypp), as we will be adding more information (including suggested reading lists) on the “Examination Structure” and “Important Updates” pages.<br><br>"
+				.HTMLBody = .HTMLBody & "Best of luck!<br><br>"
+				.HTMLBody = .HTMLBody & "Sincerely,<br><br>"
+				.HTMLBody = .HTMLBody & "YPP examinations team<br><br>"
+				.HTMLBody = .HTMLBody & "--------------------------------------------------------------------------------------------------------------------------------<br><br>"
+				.HTMLBody = .HTMLBody & "Chère/cher " & cell.Offset(0, -1).Value & ",<br><br>"
+				.HTMLBody = .HTMLBody & "Toutes nos félicitations ! Nous vous informons que le Secrétariat des Nations Unies a terminé l’examen des candidatures pour le concours des Jeunes Administrateurs 2019. Nous sommes heureux de vous informer que vous êtes invité(e) à participer à l'épreuve écrite du concours des Jeunes Administrateurs 2019 pour <b>les affaires économiques</b>.<br><br>"
+				.HTMLBody = .HTMLBody & "La première étape du concours YPP 2019 devrait être administrée en ligne en décembre 2019. Seuls les candidats ayant obtenu une note supérieure ou égale au seuil requis pour cette étape seront invités à la seconde étape de l'examen (qui se déroulera en ligne, en principe en janvier 2020). Alors que nous travaillons à la finalisation des dates d’examens, vous recevrez en parallèle un courrier sollicitant votre emplacement prévu (ville et pays) pour le passage de l’examen.<br><br>"
+				.HTMLBody = .HTMLBody & "À l'approche de la date de l'examen, vous recevrez des informations supplémentaires concernant les modalités de déroulement de l'examen en ligne. Cette information contiendra la durée de l'examen ainsi que la fenêtre de temps imparti pour le compléter. Vous recevrez également un lien URL vers un site internet vous permettant de vous familiariser avec la plateforme d'examen.<br><br>"
+				.HTMLBody = .HTMLBody & "Continuer à visiter le site Web de YPP (careers.un.org/yppfr) car nous continuerons à ajouter des informations (y compris les listes de lecture suggérées) sous « Structure de l'examen » et « Mises à jour importantes ».<br><br>"
+				.HTMLBody = .HTMLBody & "Bonne chance !<br><br>"
+				.HTMLBody = .HTMLBody & "Cordialement,<br><br>"
+				.HTMLBody = .HTMLBody & "L’équipe d'examens YPP<br><br>"
+
+       
+                
+                .Send  'Or use .Display
+            End With
+
+            Set OutMail = Nothing
+        End If
+    Next cell
+
+    Set OutApp = Nothing
+    With Application
+        .EnableEvents = True
+        .ScreenUpdating = True
+    End With
+End Sub
+

@@ -1,0 +1,74 @@
+Sub Send_Files()
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Dim sh As Worksheet
+    Dim cell As Range
+   
+    With Application
+        .EnableEvents = False
+        .ScreenUpdating = False
+    End With
+
+    Set sh = Sheets("Sheet1")
+
+    Set OutApp = CreateObject("Outlook.Application")
+ 
+
+    For Each cell In sh.Columns("B").Cells.SpecialCells(xlCellTypeConstants)
+
+        If cell.Value Like "?*@?*.?*" Then
+            Set OutMail = OutApp.CreateItem(0)
+
+            With OutMail
+                .SentOnBehalfOfName = """DM-OHRM-YPP2018"" <ypp2018@un.org>"
+                .to = cell.Value
+                .Subject = "2018 YPP Test Preparation Webinar - Webinaire de préparation a l'examen du YPP 2018 "
+               
+                .HTMLBody = "Dear " & cell.Offset(0, -1).Value & ",<br><br>"
+                                
+				.HTMLBody = .HTMLBody & "Congratulations again on being convoked to the first stage of the 2018 Young Professionals Programme (YPP) online examination! We are pleased to announce that the <b>exam will take place on Thursday, 25 October 2018, between 6:00 AM – 11:30 AM (NY time)</b>; the exact length of the exam will be announced soon. It is recommended that candidates reserve for themselves approximately 3 hours within the 5.5 hour timeframe (though the test itself will be less than 3 hours). Additionally, candidates should find a location for taking the exam during the above period with stable internet connection, comfortable seating, appropriate lighting, and limited or no noise or distraction.<br><br>"
+				.HTMLBody = .HTMLBody & "We would like to invite you to attend an <b>informational webinar</b> on <b>Monday, 8 October</b> or <b>Tuesday, 9 October</b>, for tips on how to prepare for the 2018 YPP exam in all 3 exam areas (Legal Affairs, Social Affairs and Statistics). In the webinar, we will discuss the examination structure, online administration, and inform you on where to find some helpful information (e.g., suggested reading list, past tests).<br><br>"
+				.HTMLBody = .HTMLBody & "The webinars will all cover the same information; two will be conducted in English and one in French. Please see below details to register for the webinar session of your choice.<br><br>"
+				.HTMLBody = .HTMLBody & "<b>Webinar Details:</b><br><br>"
+				.HTMLBody = .HTMLBody & "<b>When:</b><br>"
+				.HTMLBody = .HTMLBody & "Monday, 8 October 2018, <b>9:30AM to 10:30AM</b> (NY time) – <b>English</b><br>"
+				.HTMLBody = .HTMLBody & "Tuesday, 9 October 2018, <b>8:00PM to 9:00PM</b> (NY time) – <b>English</b><br><br>"
+				.HTMLBody = .HTMLBody & "<b>Steps to register</b> (screenshots attached):<br>"
+				.HTMLBody = .HTMLBody & "Click on the link (according to the date you want to register) -> Join as a participant -> Registration (or Register) -> I do not have an account (continue) -> Fill in your information -> Register<br><br>"
+				.HTMLBody = .HTMLBody & "<b>Links:</b><br>"
+				.HTMLBody = .HTMLBody & "Monday, 8 October (English): https://un.webex.com/un/k2/j.php?MTID=t49080a4332c31126e62cc551d253aa9c<br>"
+				.HTMLBody = .HTMLBody & "Tuesday, 9 October (English): https://un.webex.com/un/k2/j.php?MTID=t26480a9663fefcc06bad3ef1997120c0<br><br>"
+				.HTMLBody = .HTMLBody & "<b>Note:</b> After you register, you will receive an email from messenger@webex.com that your request will be reviewed. After your registration is approved, you will receive an email on how to join the webinar.<br><br>"
+				.HTMLBody = .HTMLBody & "Warm regards,<br>"
+				.HTMLBody = .HTMLBody & "YPP Team<br><br>"
+				.HTMLBody = .HTMLBody & "--------------------------------------------------------------------------------------------------------------------------------<br><br>"
+				.HTMLBody = .HTMLBody & cell.Offset(0, 1).Value & ",<br><br>"
+				.HTMLBody = .HTMLBody & "Félicitations pour votre convocation à la première étape de l'épreuve en ligne du Programme Jeunes administrateurs (YPP) de 2018 ! Nous avons le plaisir d'annoncer que <b>l'examen aura lieu le jeudi 25 octobre 2018 entre 6h00 et 11h30 (heure de New York)</b>; la durée exacte de l'examen sera communiquée prochainement. Il est recommandé aux candidats de réserver environ 3 heures sur une période de 5,5 heures (bien que l’examen dure moins de 3 heures). De plus, il est recommandé aux candidats de trouver un endroit avec une connexion internet stable, des sièges confortables, un éclairage approprié et peu ou pas de bruit ou de distraction, pour passer l'examen pendant la période susmentionnée.<br><br>"
+				.HTMLBody = .HTMLBody & "Nous aimerions vous inviter à participer à un <b>informational webinar le mardi 9 octobre</b> pour obtenir des conseils sur la préparation à l'examen du YPP 2018 dans les trois domaines participants (affaires juridiques, affaires sociales et statistiques). Dans le webinaire, nous discuterons de la structure de l'examen, de l'administration de l’examen en ligne et nous vous indiquerons où trouver des informations utiles (liste de lectures suggérées, tests antérieurs, entre autres).<br><br>"
+				.HTMLBody = .HTMLBody & "<b>Détails du webinaire :</b><br><br>"
+				.HTMLBody = .HTMLBody & "<b>Quand :</b><br>"
+				.HTMLBody = .HTMLBody & "Le mardi 9 octobre 2018, <b>de 9h30 à 10h30</b> (heure de New York) – <b>Français</b><br><br>"
+				.HTMLBody = .HTMLBody & "<b>Instructions pour s'inscrire</b> (captures d'écran attaché) :<br>"
+				.HTMLBody = .HTMLBody & "Cliquez sur le lien -> Join as a participant -> Registration (ou Register) -> I do not have an account (continue) -> Complétez vos informations -> Register<br><br>"
+				.HTMLBody = .HTMLBody & "<b>Lien :</b><br>"
+				.HTMLBody = .HTMLBody & "Mardi 9 octobre (Français): https://un.webex.com/un/k2/j.php?MTID=t873e8abfda89bbb72cb23ab572134d5e<br><br>"
+				.HTMLBody = .HTMLBody & "<b>Remarque :</b> après votre inscription, vous recevrez un courriel de la part de messenger@webex.com indiquant que votre demande sera examinée. Une fois votre inscription approuvée, vous recevrez un courrier électronique sur la procédure à suivre pour participer au webinaire.<br><br>"
+				.HTMLBody = .HTMLBody & "Cordialement,<br>"
+				.HTMLBody = .HTMLBody & "L’équipe du YPP<br><br>"
+
+                .Attachments.Add cell.Offset(0, 2).Value       
+                
+                .Send  'Or use .Display
+            End With
+
+            Set OutMail = Nothing
+        End If
+    Next cell
+
+    Set OutApp = Nothing
+    With Application
+        .EnableEvents = True
+        .ScreenUpdating = True
+    End With
+End Sub
+
